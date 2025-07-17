@@ -1,0 +1,95 @@
+@let disabled = eventFormGroup.disabled;
+@let canEdit = (eventInfo$ | async)?.canEdit !== false;
+<ion-list
+  mode="ios"
+  [formGroup]="eventFormGroup"
+  [class.form-disabled]="disabled"
+>
+  <ion-item>
+    <ion-label> {{ EditEventFormLocalize.Name | localize }} </ion-label>
+    <ion-input
+      color="dark" slot="end"
+      formControlName="name"
+      [placeholder]="EditEventFormLocalize.NamePlaceholder | localize"
+    ></ion-input>
+  </ion-item>
+  <ion-item (click)="startDateModal.present()">
+    <ion-label> {{ EditEventFormLocalize.Starts | localize }} </ion-label>
+    <ion-datetime-button datetime="datetimeStart"></ion-datetime-button>
+    <ion-modal
+      #startDateModal
+      class="event-datetime-modal"
+      [keepContentsMounted]="true"
+      [initialBreakpoint]="1"
+      [breakpoints]="[0, 1]">
+      <ng-template>
+        <ion-datetime
+          id="datetimeStart"
+          formControlName="starts"
+          [firstDayOfWeek]="1"
+          [locale]="localizeFormat$ | async"
+          presentation="date"
+          mode="ios"
+        ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+  <ion-item (click)="endDateModal.present()">
+    <ion-label> {{ EditEventFormLocalize.Ends | localize }} </ion-label>
+    <ion-datetime-button datetime="datetimeEnd"></ion-datetime-button>
+    <ion-modal
+      #endDateModal
+      class="event-datetime-modal"
+      [keepContentsMounted]="true"
+      [initialBreakpoint]="1"
+      [breakpoints]="[0, 1]">
+      <ng-template>
+        <ion-datetime
+          id="datetimeEnd"
+          formControlName="ends"
+          [firstDayOfWeek]="1"
+          [locale]="localizeFormat$ | async"
+          presentation="date"
+          mode="ios"
+        ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+  <ion-item lines="none" class="notes-item">
+    <ion-label> {{ EditEventFormLocalize.Description | localize }} </ion-label>
+    <ion-textarea
+      color="dark" slot="end"
+      formControlName="description"
+      [autoGrow]="true"
+      [placeholder]="EditEventFormLocalize.DescriptionPlaceholder | localize"
+    ></ion-textarea>
+  </ion-item>
+</ion-list>
+
+<ion-button
+  mode="ios"
+  expand="block"
+  class="save-changes-button"
+  (click)="saveChanges()"
+  [disabled]="
+    !canEdit ||
+    disabled ||
+    eventFormGroup.invalid ||
+    isDatesInvalid()
+  ">
+  @if (disabled) {
+    <ion-spinner mode="ios" slot="start"></ion-spinner>
+  } @else {
+    <ion-icon
+      slot="start"
+      [name]="eventId()
+        ? 'checkmark-outline'
+        : 'add-outline'"
+    />
+  }
+  <ion-label>
+    {{ (eventId()
+          ? EditEventFormLocalize.UpdateEvent
+          : EditEventFormLocalize.CreateEvent) | localize }}
+  </ion-label>
+</ion-button>

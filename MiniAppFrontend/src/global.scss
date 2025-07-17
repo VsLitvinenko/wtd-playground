@@ -1,0 +1,61 @@
+/* Custom skeleton css class */
+@use './theme/skeleton.scss';
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+// @import "@ionic/angular/css/palettes/dark.always.css";
+@import "@ionic/angular/css/palettes/dark.class.css";
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
+body {
+  background-color: var(--ion-background-color, #fff);
+}
+
+/* custom style fixes */
+@media only screen and (min-width: 768px) and (min-height: 768px) {
+  .app-page-inner {
+    max-width: max(34vw, 600px) !important;
+    left: min(32vw, calc(50vw - 300px)) !important;
+  }
+}
+
+ion-datetime.datetime-presentation-date {
+  max-width: 100%;
+}
+
+ion-app:has(> ion-modal.modal-sheet) {
+  ion-content {
+    --overflow: hidden;
+  }
+}
+
+ion-searchbar {
+  .searchbar-search-icon {
+    margin-left: 0.25rem !important;
+  }
+  .searchbar-input {
+    padding-inline-start: 2.5rem !important;
+  }
+}
+
+ion-toast {
+  opacity: 0.85 !important;
+}
+
+ion-alert > ion-backdrop {
+  opacity: 0.5 !important;
+}

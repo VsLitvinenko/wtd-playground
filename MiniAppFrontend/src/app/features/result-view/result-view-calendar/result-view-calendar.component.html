@@ -1,0 +1,32 @@
+<div>
+  <div class="calendar-header"></div>
+  <ion-datetime
+    appResultViewCalendarPicker
+    (dateSelected)="selectedDate.set($event)"
+    [firstDayOfWeek]="1"
+    [locale]="localizeFormat$ | async"
+    presentation="date"
+    mode="ios"
+  ></ion-datetime>
+  <div
+    *ngIf="selectedDate() as sDate"
+    class="calendar-footer"
+  >
+    <ion-item (click)="infoModal.present(sDate)" button lines="none">
+      <ion-icon
+        slot="start"
+        [color]="sDate.noTimeOverlap ? 'danger' : Helpers.getColorByType(sDate.voteType)"
+        [name]="Helpers.getIconByType(sDate.voteType)"
+      ></ion-icon>
+      <ion-label>
+        {{ sDate.date | date : 'dd.MM.yyyy' }}
+      </ion-label>
+      <ion-note slot="end">
+        {{ sDate.users.length }}
+        {{ ResultViewLocalize.Member | localizeMany : sDate.users.length }}
+      </ion-note>
+    </ion-item>
+  </div>
+</div>
+
+<app-result-date-info-modal #infoModal></app-result-date-info-modal>

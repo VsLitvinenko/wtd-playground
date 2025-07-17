@@ -1,0 +1,57 @@
+
+<ion-accordion-group mode="ios" [class.disabled]="disabled">
+  <ion-accordion value="filters" toggleIcon="remove-outline">
+    
+    <ion-item slot="header" class="header-item">
+      <ion-label> {{ ResultFiltersLocalize.FilterResults | localize }} </ion-label>
+    </ion-item>
+
+    <ion-list slot="content" mode="ios">
+      <ion-item>
+        <ion-checkbox [(ngModel)]="noMaybe">
+          {{ ResultFiltersLocalize.Exclude | localize }}
+          <ion-text color="warning">
+            {{ ResultFiltersLocalize.Maybe | localize }}
+          </ion-text>
+        </ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="noTime">
+          {{ ResultFiltersLocalize.Exclude | localize }}
+          <ion-text color="success">
+            {{ ResultFiltersLocalize.Time | localize }}
+          </ion-text>
+        </ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="onlyWithMe">
+          {{ ResultFiltersLocalize.OnlyWithMe | localize }}
+        </ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="trimPast">
+          {{ ResultFiltersLocalize.IgnorePastDates | localize }}
+        </ion-checkbox>
+      </ion-item>
+
+      <ion-item lines="none" >
+        <ion-label>
+          {{ ResultFiltersLocalize.AtLeast | localize }}
+        </ion-label>
+        <ion-note>
+          {{ membersCount() }}
+          {{ ResultFiltersLocalize.Member | localizeMany : membersCount() }}
+        </ion-note>
+      </ion-item>
+      <ion-item lines="none" class="range-list-item">
+        <ion-range
+          [(ngModel)]="membersCount"
+          [snaps]="true"
+          [min]="1"
+          [max]="maxMembers"
+          [ticks]="maxMembers <= 10"
+        ></ion-range>
+      </ion-item>
+    </ion-list>
+  </ion-accordion>
+</ion-accordion-group>

@@ -1,0 +1,64 @@
+<ion-modal
+  #modal
+  [initialBreakpoint]="1"
+  [breakpoints]="[0, 1]"
+  (ionModalDidDismiss)="clearData()"
+>
+  <ng-template>
+    @if (resultDate) {
+      <div class="header">
+        <ng-container *ngIf="(dateFormat$ | async) as format">
+          <h3> {{ resultDate.date | date : format.dateFormat : undefined : format.localize }} </h3>
+        </ng-container>
+        @if (resultDate.noTimeOverlap) {
+          <ion-chip color="danger">
+            <ion-icon name="alert-circle-outline"/>
+            <ion-label> {{ ResultViewLocalize.NoTimeOverlap | localize }} </ion-label>
+          </ion-chip>
+        } @else {
+          <ion-chip [color]="Helpers.getColorByType(resultDate.voteType)" class="ion-activated">
+            <ion-icon [name]="Helpers.getIconByType(resultDate.voteType)"></ion-icon>
+            <ion-label>
+              {{ resultDate.start ? (resultDate.start | date : 'HH:mm') : '00:00' }} - 
+              {{ resultDate.end ? (resultDate.end | date : 'HH:mm') : '23:59' }}
+            </ion-label>
+          </ion-chip>
+        }
+      </div>
+      <app-users-list
+        [users]="resultDate.users"
+        [clickable]="true"
+        (userClicked)="toggleUserMode($event.user)"
+        (searchFocused)="modal.backdropDismiss = !$event"
+      >
+        <ng-template #altLabel let-user>
+          <ion-label>
+            @if (timeModeIndexes.has(user.index)) {
+              <ion-text color="medium">
+                {{ user.username ? ('@' + user.username) : user.fullName }}
+              </ion-text>
+            }
+            @else { {{ user.fullName }} }
+          </ion-label>
+        </ng-template>
+
+        <ng-template #end let-user>
+          @if (timeModeIndexes.has(user.index)) {
+            <!-- time mode -->
+           <ion-text [color]="Helpers.getColorByType(user.voteType)" class="user-time-info">
+              {{ user.start ? (user.start | date : 'HH:mm') : '00:00' }} - 
+              {{ user.end ? (user.end | date : 'HH:mm') : '23:59' }}
+           </ion-text>
+          } @else {
+            <!-- default mode -->
+            <ion-icon
+              [color]="Helpers.getColorByType(user.voteType)"
+              [icon]="Helpers.getIconByType(user.voteType)"
+            ></ion-icon>
+          }
+
+        </ng-template>
+      </app-users-list>
+    }
+  </ng-template>
+</ion-modal>

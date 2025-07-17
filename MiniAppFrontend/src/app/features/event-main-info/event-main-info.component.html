@@ -1,0 +1,105 @@
+@let eventInfo = info();
+@let eventUsers = users();
+<ion-accordion-group mode="ios">
+  <ion-accordion value="info">
+    <!-- header -->
+    <ion-item slot="header" class="header-item">
+      <ion-avatar slot="start">
+        <img appImgLoad [src]="eventInfo?.creator?.photoUrl"/>
+      </ion-avatar>
+      <ion-label> {{ eventInfo?.name ?? 'Event name' }} </ion-label>
+      <ion-button
+        id="menu-popover-trigger"
+        class="menu-button" slot="end"
+        color="dark" fill="clear" size="large"
+        (click)="$event.stopPropagation()">
+        <ion-icon name="ellipsis-vertical" slot="icon-only"/>
+      </ion-button>
+      <ion-popover
+        mode="ios"
+        trigger="menu-popover-trigger"
+        triggerAction="click"
+        [dismissOnSelect]="true"
+        [arrow]="false">
+        <ng-template>
+          <ion-list class="popover-menu-list" lines="none">
+            <ion-item button [detail]="false" (click)="refreshInfo(); refreshUsers()">
+              <ion-icon name="refresh-outline" slot="start" color="medium"/>
+              <ion-label> {{ EventMainInfoLocalize.Refresh | localize }} </ion-label>
+            </ion-item>
+            <ion-item button [detail]="false" (click)="share()">
+              <ion-icon name="share-social-outline" slot="start" color="medium"/>
+              <ion-label> {{ EventMainInfoLocalize.Share | localize }} </ion-label>
+            </ion-item>
+            <ion-item button [detail]="false" (click)="copyToClipboard()">
+              <ion-icon name="link-outline" slot="start" color="medium"/>
+              <ion-label> {{ EventMainInfoLocalize.Link | localize }} </ion-label>
+            </ion-item>
+            <!-- creator only actions -->
+            @if (eventInfo?.canEdit) {
+              <ion-item button [detail]="false" (click)="redirectToEdit()">
+                <ion-icon name="create-outline" slot="start" color="medium"/>
+                <ion-label> {{ EventMainInfoLocalize.Edit | localize }} </ion-label>
+              </ion-item>
+              <ion-item button [detail]="false" (click)="deleteEvent()">
+                <ion-icon name="trash-outline" slot="start" color="danger"/>
+                <ion-label color="danger"> {{ EventMainInfoLocalize.Delete | localize }} </ion-label>
+              </ion-item>
+            }
+          </ion-list>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+    <!-- content -->
+    <ion-list class="info-list" slot="content" mode="ios">
+      @let membersCount = eventUsers?.length ?? 0;
+      @if (membersCount > 0) {
+        <ion-item button [detail]="false" (click)="usersModal.present()">
+          <ion-label>
+            {{ membersCount }}
+            {{ EventMainInfoLocalize.Member | localizeMany : membersCount }}
+          </ion-label>
+          <app-avatars-list [users]="eventUsers ?? []"/>
+        </ion-item>
+      }
+      <ion-item>
+        <ion-label> {{ EventMainInfoLocalize.Initiator | localize }} </ion-label>
+        <ion-note> {{ eventInfo?.creator?.fullName }} </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{ EventMainInfoLocalize.Starts | localize }} </ion-label>
+        <ion-note> {{ eventInfo?.starts | date : 'dd.MM.yyyy'}} </ion-note>
+      </ion-item>
+      <ion-item [lines]="eventInfo?.description ? '' : 'none'">
+        <ion-label> {{ EventMainInfoLocalize.Ends | localize }} </ion-label>
+        <ion-note> {{ eventInfo?.ends | date : 'dd.MM.yyyy'}} </ion-note>
+      </ion-item>
+      @if (eventInfo?.description) {
+        <ion-item class="notes-item" lines="none">
+          <ion-label> {{ EventMainInfoLocalize.Description | localize }} </ion-label>
+          <ion-note> {{ eventInfo?.description }} </ion-note>
+        </ion-item>
+      }
+    </ion-list>
+  </ion-accordion>
+</ion-accordion-group>
+
+<ion-modal
+  #usersModal
+  [initialBreakpoint]="1"
+  [breakpoints]="[0, 1]">
+  <ng-template>
+    <app-users-list
+      [users]="eventUsers ?? []"
+      (searchFocused)="usersModal.backdropDismiss = !$event"
+    >
+      <ng-template #end let-user>
+        <ion-note *ngIf="user.username" class="username">
+          {{ '@' + user.username }}
+        </ion-note>
+      </ng-template>
+    </app-users-list>
+  </ng-template>
+</ion-modal>
+

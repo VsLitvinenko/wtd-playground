@@ -1,0 +1,31 @@
+ion-modal {
+  --height: auto;
+  app-users-list {
+    height: 52vh;
+    padding: 0 1rem 1rem;
+  }
+}
+
+.header {
+  padding: 2rem 2rem 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 0.5rem;
+  row-gap: 0.25rem;
+
+  h3 {
+    margin: 0;
+  }
+
+  ion-chip {
+    pointer-events: none;
+    margin: 0;
+  }
+}
+
+.user-time-info {
+  font-size: 0.8rem;
+  margin-bottom: -1px;
+}

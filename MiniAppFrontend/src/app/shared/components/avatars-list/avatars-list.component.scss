@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+}
+
+ion-avatar {
+  width: 1.6rem;
+  height: 1.6rem;
+  &:not(:last-child) {
+    margin-right: -0.7rem;
+  }
+}

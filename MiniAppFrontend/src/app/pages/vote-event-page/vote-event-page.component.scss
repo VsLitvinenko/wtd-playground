@@ -1,0 +1,19 @@
+ion-segment {
+  margin: 1rem 0 0.5rem;
+  background: var(--ion-color-light, #f4f5f8);
+}
+
+ion-segment-view {
+  height: auto;
+}
+
+ion-segment-content.hide {
+  display: none;
+}
+
+.segment-view-content {
+  padding: 0.25rem 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
