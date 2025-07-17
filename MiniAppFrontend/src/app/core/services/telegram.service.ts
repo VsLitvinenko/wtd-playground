@@ -4,7 +4,6 @@ import { AppColorScheme } from './theme.service';
 import { environment } from 'src/environments/environment';
 import { Localization } from 'src/app/shared/localize';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +11,13 @@ import { HttpClient } from '@angular/common/http';
 export class TelegramService {
 
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
 
-  private readonly tgBotUrl$ = this.http.get<any>('utils/bot-url').pipe(
-    map((res) => res.botUrl),
-    shareReplay(1)
-  );
+  // private readonly tgBotUrl$ = this.http.get<any>('utils/bot-url').pipe(
+  //   map((res) => res.botUrl),
+  //   shareReplay(1)
+  // );
+
+  private readonly tgBotUrl$ = of('');
 
   private readonly miniApp$ = this.getTelegramMiniApp();
 

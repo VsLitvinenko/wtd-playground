@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { UserItem } from 'src/app/shared/components';
 
 
@@ -21,19 +20,31 @@ export type EventUser = UserItem & { username?: string }
 })
 export class EventMainInfoRequestService {
   private readonly baseUrl = 'events';
-  private readonly http = inject(HttpClient);
 
   constructor() { }
 
   public getEventInfo(eventId: string): Observable<EventInfo> {
-    return this.http.get<EventInfo>(`${this.baseUrl}/info/${eventId}`);
+    return of({
+      id: '',
+      name: '',
+      starts: new Date(),
+      ends: new Date(),
+      creator: {
+        fullName: '',
+        photoUrl: '',
+      },
+      canEdit: false,
+    });
+    // return this.http.get<EventInfo>(`${this.baseUrl}/info/${eventId}`);
   }
 
   public getEventUsers(eventId: string): Observable<EventUser[]> {
-    return this.http.get<UserItem[]>(`${this.baseUrl}/users/${eventId}`);
+    return of([]);
+    // return this.http.get<UserItem[]>(`${this.baseUrl}/users/${eventId}`);
   }
 
   public deleteEvent(eventId: string): Observable<unknown> {
-    return this.http.delete(`${this.baseUrl}/${eventId}`);
+    return of(null);
+    // return this.http.delete(`${this.baseUrl}/${eventId}`);
   }
 }

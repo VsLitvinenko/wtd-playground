@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp } from '@ionic/angular/standalone';
 import { TelegramService, ThemeService } from './core/services';
 import { Subject, takeUntil } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -26,12 +26,13 @@ import {
   trashOutline,
   addOutline,
 } from 'ionicons/icons';
+import { VoteCalendarComponent } from './features/vote-calendar';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  imports: [IonApp, VoteCalendarComponent],
 })
 export class AppComponent implements OnInit, OnDestroy {
 
