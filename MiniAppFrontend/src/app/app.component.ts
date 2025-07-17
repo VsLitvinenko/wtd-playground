@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { IonApp } from '@ionic/angular/standalone';
 import { TelegramService, ThemeService } from './core/services';
 import { Subject, takeUntil } from 'rxjs';
@@ -28,14 +28,12 @@ import {
 } from 'ionicons/icons';
 import { VoteCalendarComponent } from './features/vote-calendar';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   imports: [IonApp, VoteCalendarComponent],
 })
-export class AppComponent implements OnInit, OnDestroy {
-
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly tg = inject(TelegramService);
   private readonly theme = inject(ThemeService);
   private readonly destroyed$ = new Subject<void>();
@@ -72,8 +70,22 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((cs) => this.theme.changeColorScheme(cs));
   }
 
+  ngAfterViewInit(): void {
+    this.logAllEvents();
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next(void 0);
     this.destroyed$.complete();
+  }
+
+  private logAllEvents(): void {
+    Object.keys(window).forEach((key) => {
+      if (/^on/.test(key)) {
+        window.addEventListener(key.slice(2), (event) => {
+          console.log(event.type, event);
+        });
+      }
+    });
   }
 }
