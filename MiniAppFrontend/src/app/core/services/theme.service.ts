@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, map, merge, startWith, Subject } from 'rxjs';
+import { fromEvent, map, merge, of, startWith, Subject } from 'rxjs';
 
 export type AppColorScheme = 'light' | 'dark';
 
@@ -12,14 +12,14 @@ export class ThemeService {
   private readonly manuallyUpdate$ = new Subject<AppColorScheme>();
 
   constructor() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const matchMediaScheme$ = fromEvent(prefersDark, 'change').pipe(
-      startWith(prefersDark),
-      map((event: any) => event.matches ? 'dark' : 'light')
-    );
+    // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    // const matchMediaScheme$ = fromEvent(prefersDark, 'change').pipe(
+    //   startWith(prefersDark),
+    //   map((event: any) => event.matches ? 'dark' : 'light')
+    // );
 
-    merge(this.manuallyUpdate$, matchMediaScheme$)
-      .subscribe((colorScheme) => this.toggleDarkPalette(colorScheme));
+    // merge(this.manuallyUpdate$, matchMediaScheme$)
+    of('dark' as AppColorScheme).subscribe((colorScheme) => this.toggleDarkPalette(colorScheme));
   }
 
   public changeColorScheme(colorScheme: AppColorScheme): void {
