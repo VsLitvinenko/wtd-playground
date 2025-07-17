@@ -62,7 +62,12 @@
               "outputHashing": "all"
             },
             "git-pages": {
-              "baseHref": "/when-to-drink/",
+              "baseHref": "/wtd-playground/",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "optimization": false,
+              "deleteOutputPath": true,
               "outputPath": {
                 "base": "../docs",
                 "browser": ""
